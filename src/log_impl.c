@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
+#include <sys/time.h>
+#include <time.h>
 
 #include "../log.h"
 
@@ -36,11 +38,27 @@ void set_log_level(enum LOG_LEVEL_T level) {
     LOG_LEVEL = level;
 }
 
+void  get_now_time(char* time_buffer, int buffer_size)
+{
+    struct timeval time;
+    struct tm data;
+    
+    gettimeofday(&time, NULL);
+    gmtime_r(&(time.tv_sec), &data);
+    snprintf(time_buffer, buffer_size, "%4d-%02d-%02d %02d:%02d:%02d.%06d",
+            data.tm_year + 1900, data.tm_mon + 1, data.tm_mday,
+            data.tm_hour, data.tm_min, data.tm_sec, 
+            (int)time.tv_usec);
+}
+
 void logger(const char* file, int line, 
                 enum LOG_LEVEL_T level, const char* err_msg) {
-    char message_head[512];
-    snprintf(message_head, sizeof(message_head), "%s %2s on %s:%d",
-            log_level_name[level], err_msg, file, line);
+    char message_head[512] = {0};
+    char current_time[32] = {0};
+
+    get_now_time(current_time, 32);
+    snprintf(message_head, sizeof(message_head), "%s %s %2s on %s:%d",
+            current_time, log_level_name[level], err_msg, file, line);
     printf("%s\n", message_head);
 }
 

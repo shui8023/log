@@ -12,5 +12,8 @@
 
 int main()
 {
-    LOG_DEBUG("asdasdasd");
+    for (int i = 0; i < 10000; i++) {
+        set_log_level(WARN);
+        LOG_INFO("asdasdasd");
+    }
 }
