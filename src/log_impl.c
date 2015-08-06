@@ -59,7 +59,8 @@ void logger(const char* file, int line,
     get_now_time(current_time, 32);
     snprintf(message_head, sizeof(message_head), "%s %s %2s on %s:%d",
             current_time, log_level_name[level], err_msg, file, line);
-    printf("%s\n", message_head);
 }
 
-
+void GetLogFile() {
+    basename =    
+}
